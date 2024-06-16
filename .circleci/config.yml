@@ -8,12 +8,13 @@ workflows:
   build-push-docker-image:
     jobs:
       - docker/publish:
+          resource_class: small
           filters: 
             tags:
               only: 
                 - /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
-          cache_from: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:latest
-          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          cache_from: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME:latest
+          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
           tag: latest,$CIRCLE_TAG
