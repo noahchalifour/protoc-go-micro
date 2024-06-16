@@ -4,22 +4,9 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.6.0
-jobs:
-  build-and-push:
-    executor: docker/docker
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: noahchalifour/protoc-go-micro
-      - docker/push:
-          digest-path: /tmp/digest.txt
-          image: noahchalifour/protoc-go-micro
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
 workflows:
-  commit:
+  build-docker-image-only:
     jobs:
-      - build-and-push
+      - docker/publish:
+          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          update-description: true
